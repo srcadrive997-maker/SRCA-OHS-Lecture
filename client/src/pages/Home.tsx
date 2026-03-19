@@ -10,8 +10,9 @@
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import * as XLSX from "xlsx";
 import emailjs from "@emailjs/browser";
-import { sections, pitfalls, importantRules, interactiveScenarios, lectureTitle, lectureSubtitle } from "@/data/lectureContent";
+import { sections, pitfalls, goldenRules, interactiveScenarios, lectureTitle, lectureSubtitle, references } from "@/data/lectureContent";
 import { getRandomQuestions, verifyAnswer, getCorrectIndex } from "@/data/questionBank";
 import type { Question } from "@/data/questionBank";
 import type { Section, ContentBlock } from "@/data/lectureContent";
@@ -20,8 +21,94 @@ import {
   Menu, X, ChevronDown, ChevronUp, AlertTriangle, CheckCircle2, Info,
   BookOpen, Award, Brain, FileText, Send, Clock, ArrowRight, ArrowLeft,
   Shield, Skull, Lightbulb, ClipboardList, Heart, Star, Activity,
-  Stethoscope, Syringe, Thermometer, Eye, Zap, ShieldCheck, Flame
+  Stethoscope, Syringe, Thermometer, Eye, Zap, ShieldCheck, Flame,
+  Download, Users
 } from "lucide-react";
+
+// ============ ATTENDANCE TRACKING ============
+interface AttendanceRecord {
+  name: string;
+  branch: string;
+  employeeId: string;
+  score: number;
+  total: number;
+  percentage: number;
+  passed: boolean;
+  date: string;
+  time: string;
+}
+
+function getAttendanceRecords(): AttendanceRecord[] {
+  try {
+    const data = localStorage.getItem('srca-ohs-attendance');
+    return data ? JSON.parse(data) : [];
+  } catch { return []; }
+}
+
+function saveAttendanceRecord(record: AttendanceRecord) {
+  const records = getAttendanceRecords();
+  // Avoid duplicates by name+date
+  const exists = records.find(r => r.name === record.name && r.date === record.date);
+  if (!exists) {
+    records.push(record);
+    localStorage.setItem('srca-ohs-attendance', JSON.stringify(records));
+  }
+}
+
+function exportAttendanceToExcel() {
+  const records = getAttendanceRecords();
+  if (records.length === 0) {
+    alert('لا توجد سجلات حضور بعد');
+    return;
+  }
+  
+  const data = records.map((r, i) => ({
+    'م': i + 1,
+    'اسم المسعف': r.name,
+    'الفرع': r.branch || 'غير محدد',
+    'الرقم الوظيفي': r.employeeId || 'غير محدد',
+    'الدرجة': `${r.score}/${r.total}`,
+    'النسبة': `${r.percentage}%`,
+    'النتيجة': r.passed ? 'ناجح' : 'راسب',
+    'التاريخ': r.date,
+    'الوقت': r.time,
+  }));
+
+  // Summary row
+  const totalAttendees = records.length;
+  const passedCount = records.filter(r => r.passed).length;
+  const failedCount = totalAttendees - passedCount;
+  const branchCounts: Record<string, number> = {};
+  records.forEach(r => {
+    const b = r.branch || 'غير محدد';
+    branchCounts[b] = (branchCounts[b] || 0) + 1;
+  });
+
+  const ws = XLSX.utils.json_to_sheet(data);
+  
+  // Add summary rows
+  const summaryStart = data.length + 3;
+  XLSX.utils.sheet_add_aoa(ws, [
+    [],
+    ['ملخص الحضور'],
+    ['إجمالي الحضور', totalAttendees],
+    ['عدد الناجحين', passedCount],
+    ['عدد الراسبين', failedCount],
+    [],
+    ['توزيع الحضور حسب الفرع'],
+    ...Object.entries(branchCounts).map(([branch, count]) => [branch, count]),
+  ], { origin: `A${summaryStart}` });
+
+  // Set column widths
+  ws['!cols'] = [
+    { wch: 5 }, { wch: 25 }, { wch: 18 }, { wch: 15 },
+    { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 15 }, { wch: 12 }
+  ];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'سجل الحضور');
+  XLSX.writeFile(wb, `سجل_حضور_محاضرة_الصحة_المهنية_${new Date().toLocaleDateString('ar-SA')}.xlsx`);
+}
 
 const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/hero-banner_e1dbdbb2.png";
 const INFECTION_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/infection-control_cf638033.png";
@@ -29,7 +116,12 @@ const LIFTING_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/
 const MENTAL_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/mental-health_b9163187.png";
 const AMBULANCE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/ambulance-safety_a7caf1db.png";
 const SRCA_LOGO = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/SRCAlogo_intl_cmyk_91eb8305.webp";
-const SRCA_LOGO_OFFICIAL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/SRCAlogo_local_rgb_400fe819.jpg";
+const SRCA_LOGO_OFFICIAL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/SRCAlogo_local_rgb_99f6fdc0.jpg";
+const QR_CODE_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/SRCA-OHS-QR-Code_31131e2a.png";
+const CBRNE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/srca-hero-cbrne_f367514b.png";
+const TRIAGE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/srca-triage-scene_9e84dd64.png";
+const RADIATION_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/srca-radiation-response_11afd489.png";
+const CHEMICAL_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/srca-chemical-decon_46b59761.png";
 
 // ============ FLOATING GLOWING MEDICAL ICONS ============
 function FloatingMedicalIcons() {
@@ -456,7 +548,7 @@ function RulesSection() {
         </div>
       </motion.div>
       <div className="space-y-4">
-        {importantRules.map((rule, i) => (
+        {goldenRules.map((rule: any, i: number) => (
           <motion.div
             key={rule.id}
             initial={{ opacity: 0, x: -10 }}
@@ -696,6 +788,25 @@ function MCQAssessment() {
     setFinished(true);
   };
 
+  // Save attendance when exam finishes
+  useEffect(() => {
+    if (finished && studentName) {
+      const s = questions.reduce((acc, q, i) => acc + (answers[i] !== undefined && verifyAnswer(q, answers[i]) ? 1 : 0), 0);
+      const pct = questions.length > 0 ? Math.round((s / questions.length) * 100) : 0;
+      saveAttendanceRecord({
+        name: studentName,
+        branch: studentBranch,
+        employeeId: studentId,
+        score: s,
+        total: questions.length,
+        percentage: pct,
+        passed: pct >= 60,
+        date: new Date().toLocaleDateString('ar-SA'),
+        time: new Date().toLocaleTimeString('ar-SA'),
+      });
+    }
+  }, [finished]);
+
   const score = questions.reduce((acc, q, i) => {
     return acc + (answers[i] !== undefined && verifyAnswer(q, answers[i]) ? 1 : 0);
   }, 0);
@@ -921,6 +1032,26 @@ function MCQAssessment() {
             >
               إعادة التقييم
             </button>
+            {/* Attendance Export Section */}
+            <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-200">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Users size={20} className="text-blue-600" />
+                  <span className="text-sm md:text-base font-bold text-blue-800">سجل الحضور</span>
+                </div>
+                <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-bold">
+                  {getAttendanceRecords().length} حاضر
+                </span>
+              </div>
+              <p className="text-xs md:text-sm text-blue-600 mb-3">يتم تسجيل كل من أجاب على الأسئلة تلقائياً كحاضر</p>
+              <button
+                onClick={exportAttendanceToExcel}
+                className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm md:text-base font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+              >
+                <Download size={18} />
+                تصدير سجل الحضور - Excel
+              </button>
+            </div>
           </div>
         </motion.div>
       </div>
@@ -1130,41 +1261,26 @@ export default function Home() {
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="mb-5 relative"
           >
-            {/* Glowing white stars around the logo */}
-            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
+            {/* 5 stars that scatter outward and fade away in 3 seconds */}
+            {[0, 72, 144, 216, 288].map((angle, i) => (
               <motion.div
                 key={angle}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: [0, 1, 0.5, 1], scale: [0, 1.2, 0.8, 1] }}
-                transition={{ delay: 1.2 + i * 0.15, duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
+                animate={{
+                  opacity: [0, 1, 1, 0],
+                  scale: [0, 1.3, 1, 0],
+                  x: Math.cos((angle * Math.PI) / 180) * 120,
+                  y: Math.sin((angle * Math.PI) / 180) * 120,
+                }}
+                transition={{ delay: 0.8 + i * 0.12, duration: 3, ease: "easeOut" }}
                 className="absolute"
                 style={{
-                  top: `calc(50% + ${Math.sin((angle * Math.PI) / 180) * 85}px - 6px)`,
-                  left: `calc(50% + ${Math.cos((angle * Math.PI) / 180) * 85}px - 6px)`,
+                  top: 'calc(50% - 7px)',
+                  left: 'calc(50% - 7px)',
                 }}
               >
-                <svg width="12" height="12" viewBox="0 0 24 24">
-                  <path d="M12 0L14.59 8.41L23 12L14.59 15.59L12 24L9.41 15.59L1 12L9.41 8.41Z" fill="white" opacity="0.9">
-                    <animate attributeName="opacity" values="0.4;1;0.4" dur={`${1.5 + i * 0.2}s`} repeatCount="indefinite" />
-                  </path>
-                </svg>
-              </motion.div>
-            ))}
-            {/* Additional sparkle stars (smaller, between main stars) */}
-            {[22, 67, 112, 157, 202, 247, 292, 337].map((angle, i) => (
-              <motion.div
-                key={`spark-${angle}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 0.8, 0.3, 0.8] }}
-                transition={{ delay: 1.8 + i * 0.1, duration: 1.8, repeat: Infinity, repeatType: "reverse" }}
-                className="absolute"
-                style={{
-                  top: `calc(50% + ${Math.sin((angle * Math.PI) / 180) * 95}px - 4px)`,
-                  left: `calc(50% + ${Math.cos((angle * Math.PI) / 180) * 95}px - 4px)`,
-                }}
-              >
-                <svg width="8" height="8" viewBox="0 0 24 24">
-                  <path d="M12 0L14.59 8.41L23 12L14.59 15.59L12 24L9.41 15.59L1 12L9.41 8.41Z" fill="white" opacity="0.7" />
+                <svg width="14" height="14" viewBox="0 0 24 24">
+                  <path d="M12 0L14.59 8.41L23 12L14.59 15.59L12 24L9.41 15.59L1 12L9.41 8.41Z" fill="white" opacity="0.95" />
                 </svg>
               </motion.div>
             ))}
@@ -1300,20 +1416,35 @@ export default function Home() {
         {/* MCQ Assessment */}
         <MCQAssessment />
 
-        {/* References */}
+        {/* QR Code Section */}
+        <div className="mb-10">
+          <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 text-center">
+            <h3 className="text-lg md:text-xl font-bold text-gray-800 font-[Tajawal] mb-2 flex items-center justify-center gap-2">
+              <span className="text-2xl">📱</span>
+              شارك المحاضرة
+            </h3>
+            <p className="text-sm md:text-base text-gray-500 mb-4">امسح الكود للوصول المباشر للمحاضرة</p>
+            <div className="w-40 h-40 md:w-48 md:h-48 mx-auto bg-white rounded-2xl shadow-md p-3 border border-gray-200">
+              <img src={QR_CODE_URL} alt="QR Code - رابط المحاضرة" className="w-full h-full object-contain" />
+            </div>
+            <p className="text-xs text-gray-400 mt-3 font-mono">srcadrive997-maker.github.io/SRCA-OHS-Lecture</p>
+          </div>
+        </div>
+
+        {/* References - Dynamic from lectureContent */}
         <div className="mb-10">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6">
             <h3 className="text-base md:text-lg font-bold text-gray-800 font-[Tajawal] mb-4 flex items-center gap-2">
               <FileText size={20} className="text-gray-400" />
-              المراجع
+              المراجع والمصادر العلمية
             </h3>
             <ul className="space-y-2 text-sm md:text-base text-gray-500">
-              <li>1. National EMS Safety Council (NAEMT)</li>
-              <li>2. منظمة العمل الدولية (ILO)</li>
-              <li>3. منظمة الصحة العالمية (WHO)</li>
-              <li>4. ISO 45001 - نظام إدارة السلامة والصحة المهنية</li>
-              <li>5. OSHA – Emergency Response & Scene Safety</li>
-              <li>6. CDC – Infection Control Guidelines</li>
+              {references.map((ref: string, i: number) => (
+                <li key={i} className="flex items-start gap-2">
+                  <span className="text-xs bg-gray-100 text-gray-500 rounded-full w-6 h-6 flex items-center justify-center shrink-0 mt-0.5 font-bold">{i + 1}</span>
+                  <span>{ref}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
