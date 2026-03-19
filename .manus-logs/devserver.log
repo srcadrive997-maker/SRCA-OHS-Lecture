@@ -513,3 +513,5 @@
 [2026-03-19T03:31:53.316Z] ➜  Local:   http://localhost:3000/
 [2026-03-19T03:31:53.317Z] ➜  Network: http://169.254.0.21:3000/
 [2026-03-19T03:31:54.468Z] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[2026-03-19T03:45:57.471Z] 11:45:57 PM [vite] vite.config.ts changed, restarting server...
+[2026-03-19T03:45:57.516Z] 11:45:57 PM [vite] server restarted.
