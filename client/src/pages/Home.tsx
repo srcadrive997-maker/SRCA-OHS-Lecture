@@ -1670,9 +1670,69 @@ export default function Home() {
       {/* ===== NAVIGATION TABS ===== */}
       <div className="sticky top-0 z-40 bg-white shadow-sm border-b">
         {/* تايمر المحاضرة في الترويسة */}
-        <div className="flex items-center justify-between px-3 py-1 bg-gray-900 border-b border-gray-700">
-          <div className="flex items-center gap-1.5">
-            <span className="atom-spin text-base">&#x269B;</span>
+        <div className="flex items-center justify-between px-3 py-1.5 bg-gray-900 border-b border-gray-700">
+          <div className="flex items-center gap-2">
+            {/* 3D Atom SVG with orbiting yellow electron */}
+            <svg width="32" height="32" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
+              <defs>
+                {/* Nucleus 3D gradient */}
+                <radialGradient id="nucleusGrad" cx="35%" cy="30%" r="65%">
+                  <stop offset="0%" stopColor="#ff9a9a" />
+                  <stop offset="40%" stopColor="#c62828" />
+                  <stop offset="100%" stopColor="#4a0000" />
+                </radialGradient>
+                {/* Electron 3D gradient - yellow sphere */}
+                <radialGradient id="electronGrad" cx="30%" cy="25%" r="70%">
+                  <stop offset="0%" stopColor="#fff176" />
+                  <stop offset="45%" stopColor="#ffd600" />
+                  <stop offset="100%" stopColor="#f57f17" />
+                </radialGradient>
+                {/* Glow filter */}
+                <filter id="atomGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="1.5" result="blur" />
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                {/* Electron glow */}
+                <filter id="electronGlow" x="-80%" y="-80%" width="260%" height="260%">
+                  <feGaussianBlur stdDeviation="1.2" result="blur" />
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              {/* Orbit ellipse 1 - tilted */}
+              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(100,200,255,0.5)" strokeWidth="1" transform="rotate(-30 30 30)" />
+              {/* Orbit ellipse 2 - tilted other way */}
+              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(100,200,255,0.4)" strokeWidth="1" transform="rotate(30 30 30)" />
+              {/* Orbit ellipse 3 - vertical */}
+              <ellipse cx="30" cy="30" rx="9" ry="26" fill="none" stroke="rgba(100,200,255,0.35)" strokeWidth="1" />
+              {/* Nucleus - 3D sphere */}
+              <circle cx="30" cy="30" r="6" fill="url(#nucleusGrad)" filter="url(#atomGlow)" />
+              {/* Nucleus highlight */}
+              <circle cx="27.5" cy="27.5" r="2" fill="rgba(255,255,255,0.35)" />
+              {/* Animated electron on orbit 1 */}
+              <g filter="url(#electronGlow)">
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 30 30"
+                  to="360 30 30"
+                  dur="2s"
+                  repeatCount="indefinite"
+                />
+                <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="none" transform="rotate(-30 30 30)">
+                </ellipse>
+                {/* Electron sphere on orbit 1 */}
+                <circle cx="56" cy="30" r="3.5" fill="url(#electronGrad)">
+                  <animateTransform
+                    attributeName="transform"
+                    type="rotate"
+                    from="-30 30 30"
+                    to="330 30 30"
+                    dur="2s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+              </g>
+            </svg>
             <span className="font-mono text-sm font-bold text-red-400 tracking-widest">{formatElapsed(lectureElapsed)}</span>
           </div>
           <span className="text-[10px] text-gray-400 font-[Tajawal]">١٩ مارس ٢٠٢٦ — ٩:٠٠ م</span>
