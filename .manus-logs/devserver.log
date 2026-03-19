@@ -498,3 +498,18 @@
 [2026-03-19T03:23:33.642Z] ➜  Network: http://169.254.0.21:3000/
 [2026-03-19T03:23:34.893Z] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
 [2026-03-19T03:24:45.009Z] 11:24:45 PM [vite] (client) hmr update /src/index.css
+[2026-03-19T03:31:08.919Z] 11:31:08 PM [vite] (client) hmr update /src/pages/Home.tsx, /src/index.css
+[2026-03-19T03:31:49.004Z] Dev server process group stopped
+[2026-03-19T03:31:49.007Z] ELIFECYCLE  Command failed.
+[2026-03-19T03:31:49.035Z] Dev server exited with code -15
+[2026-03-19T03:31:52.040Z] Starting dev server with command: pnpm run dev
+[2026-03-19T03:31:52.896Z] 
+[2026-03-19T03:31:52.897Z] > srca-medical-lecture@1.0.0 dev /home/ubuntu/srca-medical-lecture
+[2026-03-19T03:31:52.898Z] > vite --host
+[2026-03-19T03:31:52.898Z] 
+[2026-03-19T03:31:53.315Z] 
+[2026-03-19T03:31:53.315Z] VITE v7.1.9  ready in 375 ms
+[2026-03-19T03:31:53.316Z] 
+[2026-03-19T03:31:53.316Z] ➜  Local:   http://localhost:3000/
+[2026-03-19T03:31:53.317Z] ➜  Network: http://169.254.0.21:3000/
+[2026-03-19T03:31:54.468Z] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`

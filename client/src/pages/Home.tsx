@@ -1391,7 +1391,7 @@ function SidebarMenu({ isOpen, onClose, onNavigate }: { isOpen: boolean; onClose
     { id: "module5", label: "سلامة مشغلي المركبات", icon: "🚑" },
     { id: "module6", label: "مكافحة العدوى", icon: "🦠" },
     { id: "module7", label: "الصحة الشخصية وسلامة المرضى", icon: "❤️" },
-        { id: "fieldProtocols", label: "البروتوكولات الميدانية", icon: "📋" },
+    { id: "fieldProtocols", label: "البروتوكولات الميدانية", icon: "📋" },
     { id: "pitfalls", label: "الأخطاء الشائعة (Pitfalls)", icon: "🔎" },
     { id: "rules", label: "القواعد المهمة", icon: "📋" },
     { id: "summary", label: "الملخص", icon: "📑" },
