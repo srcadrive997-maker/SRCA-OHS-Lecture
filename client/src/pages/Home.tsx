@@ -1672,66 +1672,75 @@ export default function Home() {
         {/* تايمر المحاضرة في الترويسة */}
         <div className="flex items-center justify-between px-3 py-1.5 bg-slate-100 border-b border-slate-300">
           <div className="flex items-center gap-2">
-            {/* 3D Atom SVG with orbiting yellow electron */}
-            <svg width="32" height="32" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
+            {/* 3D Atom SVG with electron following elliptical orbit via animateMotion */}
+            <svg width="40" height="40" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
               <defs>
-                {/* Nucleus 3D gradient */}
                 <radialGradient id="nucleusGrad" cx="35%" cy="30%" r="65%">
                   <stop offset="0%" stopColor="#ff9a9a" />
                   <stop offset="40%" stopColor="#c62828" />
                   <stop offset="100%" stopColor="#4a0000" />
                 </radialGradient>
-                {/* Electron 3D gradient - yellow sphere */}
-                <radialGradient id="electronGrad" cx="30%" cy="25%" r="70%">
-                  <stop offset="0%" stopColor="#fff176" />
-                  <stop offset="45%" stopColor="#ffd600" />
-                  <stop offset="100%" stopColor="#f57f17" />
+                <radialGradient id="electronGrad" cx="25%" cy="20%" r="75%">
+                  <stop offset="0%" stopColor="#fffde7" />
+                  <stop offset="35%" stopColor="#ffeb3b" />
+                  <stop offset="70%" stopColor="#ffc107" />
+                  <stop offset="100%" stopColor="#e65100" />
                 </radialGradient>
-                {/* Glow filter */}
-                <filter id="atomGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <filter id="atomGlow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="1.8" result="blur" />
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                <filter id="eGlow" x="-100%" y="-100%" width="300%" height="300%">
                   <feGaussianBlur stdDeviation="1.5" result="blur" />
-                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  <feColorMatrix in="blur" type="matrix" values="1 0.8 0 0 0  0.8 0.6 0 0 0  0 0 0 0 0  0 0 0 2 0" result="coloredBlur"/>
+                  <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
                 </filter>
-                {/* Electron glow */}
-                <filter id="electronGlow" x="-80%" y="-80%" width="260%" height="260%">
-                  <feGaussianBlur stdDeviation="1.2" result="blur" />
-                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
+                {/* Orbit path 1: tilted -30deg ellipse */}
+                <path id="orbit1" d="M 56,30 A 26,9 0 1 1 55.999,30.001" fill="none" transform="rotate(-30 30 30)" />
+                {/* Orbit path 2: tilted +30deg ellipse */}
+                <path id="orbit2" d="M 56,30 A 26,9 0 1 1 55.999,30.001" fill="none" transform="rotate(30 30 30)" />
+                {/* Orbit path 3: vertical ellipse */}
+                <path id="orbit3" d="M 30,4 A 9,26 0 1 1 29.999,4.001" fill="none" />
               </defs>
-              {/* Orbit ellipse 1 - tilted */}
-              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(0,0,0,0.75)" strokeWidth="1" transform="rotate(-30 30 30)" />
-              {/* Orbit ellipse 2 - tilted other way */}
-              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(0,0,0,0.65)" strokeWidth="1" transform="rotate(30 30 30)" />
-              {/* Orbit ellipse 3 - vertical */}
-              <ellipse cx="30" cy="30" rx="9" ry="26" fill="none" stroke="rgba(0,0,0,0.55)" strokeWidth="1" />
-              {/* Nucleus - 3D sphere */}
-              <circle cx="30" cy="30" r="6" fill="url(#nucleusGrad)" filter="url(#atomGlow)" />
-              {/* Nucleus highlight */}
-              <circle cx="27.5" cy="27.5" r="2" fill="rgba(255,255,255,0.35)" />
-              {/* Animated electron on orbit 1 */}
-              <g filter="url(#electronGlow)">
-                <animateTransform
-                  attributeName="transform"
-                  type="rotate"
-                  from="0 30 30"
-                  to="360 30 30"
-                  dur="2s"
-                  repeatCount="indefinite"
-                />
-                <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="none" transform="rotate(-30 30 30)">
-                </ellipse>
-                {/* Electron sphere on orbit 1 */}
-                <circle cx="56" cy="30" r="3.5" fill="url(#electronGrad)">
-                  <animateTransform
-                    attributeName="transform"
-                    type="rotate"
-                    from="-30 30 30"
-                    to="330 30 30"
-                    dur="2s"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-              </g>
+
+              {/* Back half of orbit 1 (behind nucleus) */}
+              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(0,0,0,0.55)" strokeWidth="0.9" strokeDasharray="40 42" transform="rotate(-30 30 30)" />
+              {/* Back half of orbit 2 */}
+              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(0,0,0,0.45)" strokeWidth="0.9" strokeDasharray="40 42" transform="rotate(30 30 30)" />
+              {/* Back half of orbit 3 */}
+              <ellipse cx="30" cy="30" rx="9" ry="26" fill="none" stroke="rgba(0,0,0,0.40)" strokeWidth="0.9" strokeDasharray="40 42" />
+
+              {/* Nucleus */}
+              <circle cx="30" cy="30" r="5.5" fill="url(#nucleusGrad)" filter="url(#atomGlow)" />
+              <circle cx="27.8" cy="27.8" r="1.8" fill="rgba(255,255,255,0.4)" />
+
+              {/* Front half of orbit 1 */}
+              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(0,0,0,0.8)" strokeWidth="0.9" strokeDasharray="42 40" strokeDashoffset="-40" transform="rotate(-30 30 30)" />
+              {/* Front half of orbit 2 */}
+              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(0,0,0,0.7)" strokeWidth="0.9" strokeDasharray="42 40" strokeDashoffset="-40" transform="rotate(30 30 30)" />
+              {/* Front half of orbit 3 */}
+              <ellipse cx="30" cy="30" rx="9" ry="26" fill="none" stroke="rgba(0,0,0,0.65)" strokeWidth="0.9" strokeDasharray="42 40" strokeDashoffset="-40" />
+
+              {/* Electron 1 - follows orbit1 path precisely */}
+              <circle r="3.2" fill="url(#electronGrad)" filter="url(#eGlow)">
+                <animateMotion dur="2.2s" repeatCount="indefinite" rotate="auto">
+                  <mpath href="#orbit1" />
+                </animateMotion>
+              </circle>
+
+              {/* Electron 2 - follows orbit2 path, offset start */}
+              <circle r="2.8" fill="url(#electronGrad)" filter="url(#eGlow)" opacity="0.85">
+                <animateMotion dur="3s" repeatCount="indefinite" rotate="auto" keyPoints="0.5;1;0.5" keyTimes="0;0.5;1" calcMode="linear">
+                  <mpath href="#orbit2" />
+                </animateMotion>
+              </circle>
+
+              {/* Electron 3 - follows orbit3 vertical path */}
+              <circle r="2.5" fill="url(#electronGrad)" filter="url(#eGlow)" opacity="0.75">
+                <animateMotion dur="1.8s" repeatCount="indefinite" rotate="auto" keyPoints="0.25;1;0.25" keyTimes="0;0.5;1" calcMode="linear">
+                  <mpath href="#orbit3" />
+                </animateMotion>
+              </circle>
             </svg>
             <span className="font-mono text-sm font-bold text-red-700 tracking-widest">{formatElapsed(lectureElapsed)}</span>
           </div>
