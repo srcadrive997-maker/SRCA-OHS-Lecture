@@ -1670,7 +1670,7 @@ export default function Home() {
       {/* ===== NAVIGATION TABS ===== */}
       <div className="sticky top-0 z-40 bg-white shadow-sm border-b">
         {/* تايمر المحاضرة في الترويسة */}
-        <div className="flex items-center justify-between px-3 py-1.5 bg-gray-900 border-b border-gray-700">
+        <div className="flex items-center justify-between px-3 py-1.5 bg-slate-100 border-b border-slate-300">
           <div className="flex items-center gap-2">
             {/* 3D Atom SVG with orbiting yellow electron */}
             <svg width="32" height="32" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
@@ -1733,9 +1733,9 @@ export default function Home() {
                 </circle>
               </g>
             </svg>
-            <span className="font-mono text-sm font-bold text-red-400 tracking-widest">{formatElapsed(lectureElapsed)}</span>
+            <span className="font-mono text-sm font-bold text-red-700 tracking-widest">{formatElapsed(lectureElapsed)}</span>
           </div>
-          <span className="text-[10px] text-gray-400 font-[Tajawal]">١٩ مارس ٢٠٢٦ — ٩:٠٠ م</span>
+          <span className="text-[10px] text-gray-600 font-[Tajawal]">١٩ مارس ٢٠٢٦ — ٩:٠٠ م</span>
         </div>
         <div className="overflow-x-auto scrollbar-hide">
           <div className="flex gap-1.5 p-2.5 min-w-max">
