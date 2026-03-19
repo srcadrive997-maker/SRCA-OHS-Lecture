@@ -29,6 +29,7 @@ const LIFTING_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/
 const MENTAL_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/mental-health_b9163187.png";
 const AMBULANCE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/ambulance-safety_a7caf1db.png";
 const SRCA_LOGO = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/SRCAlogo_intl_cmyk_91eb8305.webp";
+const SRCA_LOGO_OFFICIAL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/SRCAlogo_local_rgb_400fe819.jpg";
 
 // ============ FLOATING GLOWING MEDICAL ICONS ============
 function FloatingMedicalIcons() {
@@ -90,13 +91,29 @@ function SRCAWatermark() {
   );
 }
 
-// ============ DESIGNER CREDIT ============
+// ============ DESIGNER CREDIT - CIRCULAR EMBOSSED STAMP ============
 function DesignerCredit() {
   return (
-    <div className="fixed bottom-16 left-2 z-50 opacity-40 hover:opacity-80 transition-opacity">
-      <p className="text-[9px] text-gray-500 font-sans" style={{ fontFamily: "'Cairo', sans-serif", direction: "ltr", textAlign: "left" }}>
-        Designed by: Metwally Amin Helwa
-      </p>
+    <div className="fixed bottom-20 left-3 z-50 opacity-20 hover:opacity-50 transition-opacity duration-500 pointer-events-none hover:pointer-events-auto">
+      <div className="designer-stamp" style={{ width: 72, height: 72 }}>
+        <svg viewBox="0 0 120 120" width="72" height="72">
+          <circle cx="60" cy="60" r="56" fill="none" stroke="#8B7355" strokeWidth="2.5" opacity="0.7" />
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#8B7355" strokeWidth="1" opacity="0.5" />
+          <circle cx="60" cy="60" r="44" fill="none" stroke="#8B7355" strokeWidth="0.5" opacity="0.4" strokeDasharray="3 2" />
+          <defs>
+            <path id="topArc" d="M 20,60 a 40,40 0 1,1 80,0" />
+            <path id="bottomArc" d="M 100,60 a 40,40 0 1,1 -80,0" />
+          </defs>
+          <text fontSize="7.5" fontFamily="Georgia, serif" fill="#8B7355" opacity="0.8" letterSpacing="3">
+            <textPath href="#topArc" startOffset="50%" textAnchor="middle">DESIGNED BY</textPath>
+          </text>
+          <text fontSize="6" fontFamily="Georgia, serif" fill="#8B7355" opacity="0.8" letterSpacing="1.5">
+            <textPath href="#bottomArc" startOffset="50%" textAnchor="middle">METWALLY A. HELWA</textPath>
+          </text>
+          <text x="60" y="58" textAnchor="middle" fontSize="10" fill="#8B7355" opacity="0.6" fontFamily="serif">&#9733;</text>
+          <text x="60" y="68" textAnchor="middle" fontSize="5.5" fill="#8B7355" opacity="0.6" fontFamily="Georgia, serif" letterSpacing="0.5">SRCA</text>
+        </svg>
+      </div>
     </div>
   );
 }
@@ -617,6 +634,7 @@ function MCQAssessment() {
   const [finished, setFinished] = useState(false);
   const [timeLeft, setTimeLeft] = useState(20 * 60);
   const [studentName, setStudentName] = useState("");
+  const [studentBranch, setStudentBranch] = useState("");
   const [studentId, setStudentId] = useState("");
   const [showNameForm, setShowNameForm] = useState(true);
   const [emailSent, setEmailSent] = useState(false);
@@ -687,7 +705,7 @@ function MCQAssessment() {
       return `السؤال ${i + 1}: ${q.question}\nإجابة المسعف: ${userAnswer}\nالإجابة الصحيحة: ${correct}\nالنتيجة: ${isCorrect ? "✅ صحيح" : "❌ خطأ"}\n`;
     }).join("\n---\n");
 
-    const messageBody = `بسم الله الرحمن الرحيم\n\n📋 نتيجة تقييم محاضرة الصحة المهنية والسلامة الوقائية\n\n👤 اسم المسعف: ${studentName}\n🆔 الكود الوظيفي: ${studentId || "غير محدد"}\n📊 النتيجة: ${score}/${questions.length} (${percentage}%)\n${passed ? "✅ ناجح" : "❌ راسب"}\n⏱️ الوقت المتبقي: ${formatTime(timeLeft)}\n📅 التاريخ: ${new Date().toLocaleDateString("ar-SA")}\n\n${'='.repeat(50)}\n\nتفاصيل الإجابات:\n\n${results}\n\n${'='.repeat(50)}\nDesigned by: Metwally Amin Helwa\nهيئة الهلال الأحمر السعودي - إدارة الصحة المهنية`;
+    const messageBody = `بسم الله الرحمن الرحيم\n\n📋 نتيجة تقييم محاضرة الصحة المهنية والسلامة الوقائية\n\n👤 اسم المسعف: ${studentName}\n🏢 الفرع: ${studentBranch || "غير محدد"}\n🆔 الكود الوظيفي: ${studentId || "غير محدد"}\n📊 النتيجة: ${score}/${questions.length} (${percentage}%)\n${passed ? "✅ ناجح" : "❌ راسب"}\n⏱️ الوقت المتبقي: ${formatTime(timeLeft)}\n📅 التاريخ: ${new Date().toLocaleDateString("ar-SA")}\n\n${'='.repeat(50)}\n\nتفاصيل الإجابات:\n\n${results}\n\n${'='.repeat(50)}\nDesigned by: Metwally Amin Helwa\nهيئة الهلال الأحمر السعودي - إدارة الصحة المهنية`;
 
     try {
       await emailjs.send(
@@ -743,7 +761,7 @@ function MCQAssessment() {
             </div>
             <div className="space-y-4 mb-6">
               <div>
-                <label className="text-sm md:text-base font-bold text-gray-600 mb-2 block">اسم المسعف *</label>
+                <label className="text-sm md:text-base font-bold text-gray-600 mb-2 block">اسم المسعف <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   value={studentName}
@@ -751,6 +769,29 @@ function MCQAssessment() {
                   placeholder="أدخل اسمك الكامل"
                   className="w-full p-4 border border-gray-200 rounded-xl text-base focus:border-amber-400 focus:ring-2 focus:ring-amber-400 outline-none"
                 />
+              </div>
+              <div>
+                <label className="text-sm md:text-base font-bold text-gray-600 mb-2 block">الفرع <span className="text-red-500">*</span></label>
+                <select
+                  value={studentBranch}
+                  onChange={(e) => setStudentBranch(e.target.value)}
+                  className="w-full p-4 border border-gray-200 rounded-xl text-base focus:border-amber-400 focus:ring-2 focus:ring-amber-400 outline-none bg-white"
+                >
+                  <option value="">اختر الفرع</option>
+                  <option value="الرياض">الرياض</option>
+                  <option value="مكة المكرمة">مكة المكرمة</option>
+                  <option value="المدينة المنورة">المدينة المنورة</option>
+                  <option value="المنطقة الشرقية">المنطقة الشرقية</option>
+                  <option value="القصيم">القصيم</option>
+                  <option value="عسير">عسير</option>
+                  <option value="تبوك">تبوك</option>
+                  <option value="حائل">حائل</option>
+                  <option value="الحدود الشمالية">الحدود الشمالية</option>
+                  <option value="جازان">جازان</option>
+                  <option value="نجران">نجران</option>
+                  <option value="الباحة">الباحة</option>
+                  <option value="الجوف">الجوف</option>
+                </select>
               </div>
               <div>
                 <label className="text-sm md:text-base font-bold text-gray-600 mb-2 block">الرقم الوظيفي</label>
@@ -1067,18 +1108,60 @@ export default function Home() {
           <img src={HERO_IMAGE} alt="Hero" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
         </div>
-        <div className="relative z-10 px-5 py-14 md:py-20 text-center">
-          {/* SRCA Logo */}
-          <div className="mb-5">
-            <img src={SRCA_LOGO} alt="هيئة الهلال الأحمر السعودي" width="200" height="100" className="mx-auto drop-shadow-lg" style={{filter: 'brightness(0) invert(1)'}} />
-          </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white font-[Tajawal] mb-3 leading-tight">
+        <div className="relative z-10 px-5 py-10 md:py-16 text-center">
+          {/* Official SRCA Logo - Prominent Circular */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="mb-5"
+          >
+            <div className="w-28 h-28 md:w-36 md:h-36 mx-auto rounded-full overflow-hidden border-4 border-white/30 shadow-2xl bg-white p-1">
+              <img
+                src={SRCA_LOGO_OFFICIAL}
+                alt="هيئة الهلال الأحمر السعودي"
+                className="w-full h-full object-contain rounded-full"
+              />
+            </div>
+          </motion.div>
+          {/* Organization hierarchy */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mb-4 space-y-1"
+          >
+            <p className="text-sm md:text-base text-white/90 font-bold font-[Tajawal]">هيئة الهلال الأحمر السعودي</p>
+            <p className="text-xs md:text-sm text-white/70 font-[Tajawal]">الإدارة العامة للشؤون الطبية</p>
+            <p className="text-xs md:text-sm text-white/70 font-[Tajawal]">إدارة الشؤون الطبية بالمدينة المنورة</p>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="text-3xl md:text-4xl lg:text-5xl font-black text-white font-[Tajawal] mb-3 leading-tight"
+          >
             {lectureTitle}
-          </h1>
-          <p className="text-sm md:text-lg text-white/80 mb-6 leading-relaxed max-w-xl mx-auto">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="text-sm md:text-lg text-white/80 mb-4 leading-relaxed max-w-xl mx-auto"
+          >
             {lectureSubtitle}
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
+          </motion.p>
+          {/* Credits */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9 }}
+            className="mb-5 space-y-0.5"
+          >
+            <p className="text-xs md:text-sm text-white/60 font-[Tajawal]">الدكتورة تسنيم الفريدي — مدير إدارة الشؤون الطبية</p>
+            <p className="text-xs md:text-sm text-white/60 font-[Tajawal]">د. متولي أمين حلوة — قسم التحكم الطبي</p>
+          </motion.div>
+          <div className="flex flex-wrap justify-center gap-3 mb-6">
             <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs md:text-sm text-white font-bold">7 أقسام رئيسية</span>
             <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs md:text-sm text-white font-bold">سيناريوهات تفاعلية</span>
             <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs md:text-sm text-white font-bold">تقييم MCQ</span>
@@ -1167,10 +1250,36 @@ export default function Home() {
 
         {/* Footer */}
         <div className="text-center py-8 border-t border-gray-200">
-          <img src={SRCA_LOGO} alt="هيئة الهلال الأحمر السعودي" width="140" height="70" className="mx-auto mb-3 opacity-40" />
+          <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-gray-200 bg-white p-0.5 opacity-60">
+            <img src={SRCA_LOGO_OFFICIAL} alt="هيئة الهلال الأحمر السعودي" className="w-full h-full object-contain rounded-full" />
+          </div>
           <p className="text-sm text-gray-400">هيئة الهلال الأحمر السعودي</p>
-          <p className="text-sm text-gray-400">الإدارة العامة للشؤون الطبية - إدارة الصحة المهنية</p>
-          <p className="text-xs text-gray-300 mt-3" style={{ direction: "ltr" }}>Designed by: Metwally Amin Helwa</p>
+          <p className="text-sm text-gray-400">الإدارة العامة للشؤون الطبية</p>
+          <p className="text-xs text-gray-400">إدارة الشؤون الطبية بالمدينة المنورة</p>
+          <p className="text-xs text-gray-400 mt-1">الدكتورة تسنيم الفريدي — مدير إدارة الشؤون الطبية</p>
+          <p className="text-xs text-gray-400">د. متولي أمين حلوة — قسم التحكم الطبي</p>
+          {/* Circular Embossed Stamp */}
+          <div className="mt-4 flex justify-center">
+            <div className="designer-stamp" style={{ width: 60, height: 60 }}>
+              <svg viewBox="0 0 120 120" width="60" height="60" opacity="0.3">
+                <circle cx="60" cy="60" r="56" fill="none" stroke="#8B7355" strokeWidth="2.5" />
+                <circle cx="60" cy="60" r="50" fill="none" stroke="#8B7355" strokeWidth="1" />
+                <circle cx="60" cy="60" r="44" fill="none" stroke="#8B7355" strokeWidth="0.5" strokeDasharray="3 2" />
+                <defs>
+                  <path id="topArcF" d="M 20,60 a 40,40 0 1,1 80,0" />
+                  <path id="bottomArcF" d="M 100,60 a 40,40 0 1,1 -80,0" />
+                </defs>
+                <text fontSize="7.5" fontFamily="Georgia, serif" fill="#8B7355" letterSpacing="3">
+                  <textPath href="#topArcF" startOffset="50%" textAnchor="middle">DESIGNED BY</textPath>
+                </text>
+                <text fontSize="6" fontFamily="Georgia, serif" fill="#8B7355" letterSpacing="1.5">
+                  <textPath href="#bottomArcF" startOffset="50%" textAnchor="middle">METWALLY A. HELWA</textPath>
+                </text>
+                <text x="60" y="58" textAnchor="middle" fontSize="10" fill="#8B7355" fontFamily="serif">&#9733;</text>
+                <text x="60" y="68" textAnchor="middle" fontSize="5.5" fill="#8B7355" fontFamily="Georgia, serif" letterSpacing="0.5">SRCA</text>
+              </svg>
+            </div>
+          </div>
         </div>
       </main>
 

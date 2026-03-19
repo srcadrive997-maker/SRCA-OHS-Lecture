@@ -152,6 +152,18 @@
   will-change: transform, opacity;
 }
 
+/* Circular Embossed Stamp Watermark */
+.designer-stamp {
+  filter: drop-shadow(1px 1px 0px rgba(139, 115, 85, 0.15)) drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3));
+  transform: rotate(-15deg);
+  transition: all 0.5s ease;
+}
+
+.designer-stamp:hover {
+  filter: drop-shadow(1px 1px 1px rgba(139, 115, 85, 0.25)) drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.4));
+  transform: rotate(-12deg) scale(1.05);
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
