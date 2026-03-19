@@ -1623,14 +1623,7 @@ export default function Home() {
           >
             {lectureTitle}
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-            className="text-sm md:text-lg text-white/80 mb-4 leading-relaxed max-w-xl mx-auto"
-          >
-            {lectureSubtitle}
-          </motion.p>
+
           {/* Credits */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -1679,7 +1672,7 @@ export default function Home() {
         {/* تايمر المحاضرة في الترويسة */}
         <div className="flex items-center justify-between px-3 py-1 bg-gray-900 border-b border-gray-700">
           <div className="flex items-center gap-1.5">
-            <span className="hourglass-spin text-base">&#x231B;</span>
+            <span className="atom-spin text-base">&#x269B;</span>
             <span className="font-mono text-sm font-bold text-red-400 tracking-widest">{formatElapsed(lectureElapsed)}</span>
           </div>
           <span className="text-[10px] text-gray-400 font-[Tajawal]">١٩ مارس ٢٠٢٦ — ٩:٠٠ م</span>
