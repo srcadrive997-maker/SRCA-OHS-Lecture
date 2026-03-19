@@ -1503,6 +1503,22 @@ function SidebarMenu({ isOpen, onClose, onNavigate }: { isOpen: boolean; onClose
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  // ====== تايمر مدة المحاضرة ======
+  const [lectureElapsed, setLectureElapsed] = useState(0);
+  const lectureStartRef = useRef<number>(Date.now());
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLectureElapsed(Math.floor((Date.now() - lectureStartRef.current) / 1000));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+  const formatElapsed = (s: number) => {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    if (h > 0) return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
+    return `${m.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1622,8 +1638,13 @@ export default function Home() {
             transition={{ delay: 0.9 }}
             className="mb-5 space-y-0.5"
           >
-            <p className="text-xs md:text-sm text-white/60 font-[Tajawal]">الدكتورة تسنيم الفريدي — مدير إدارة الشؤون الطبية</p>
-            <p className="text-xs md:text-sm text-white/60 font-[Tajawal]">د. متولي أمين حلوة — قسم التحكم الطبي</p>
+            {/* تاريخ المحاضرة */}
+            <p className="text-xs md:text-sm text-white/70 font-[Tajawal] mb-2">
+              📅 ١٩ مارس ٢٠٢٦ — الساعة ٩:٠٠ مساءً
+            </p>
+            {/* أسماء محفورة ثلاثية الأبعاد */}
+            <p className="name-engraved-hero text-sm md:text-base">الدكتورة تسنيم الفريدي — مدير إدارة الشؤون الطبية</p>
+            <p className="name-engraved-hero text-sm md:text-base" style={{animationDelay:'0.2s'}}>د. متولي أمين حلوة — قسم التحكم الطبي</p>
           </motion.div>
           <div className="flex flex-wrap justify-center gap-3 mb-6">
             <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs md:text-sm text-white font-bold">7 أقسام رئيسية</span>
@@ -1736,8 +1757,8 @@ export default function Home() {
           <p className="text-sm text-gray-400">هيئة الهلال الأحمر السعودي</p>
           <p className="text-sm text-gray-400">الإدارة العامة للشؤون الطبية</p>
           <p className="text-xs text-gray-400">إدارة الشؤون الطبية بالمدينة المنورة</p>
-          <p className="text-xs text-gray-400 mt-1">الدكتورة تسنيم الفريدي — مدير إدارة الشؤون الطبية</p>
-          <p className="text-xs text-gray-400">د. متولي أمين حلوة — قسم التحكم الطبي</p>
+          <p className="name-engraved-footer mt-1">الدكتورة تسنيم الفريدي — مدير إدارة الشؤون الطبية</p>
+          <p className="name-engraved-footer">د. متولي أمين حلوة — قسم التحكم الطبي</p>
           {/* Circular Embossed Stamp - More Apparent */}
           <div className="mt-4 flex justify-center">
             <div className="designer-stamp" style={{ width: 75, height: 75 }}>
@@ -1805,6 +1826,13 @@ export default function Home() {
             <span className="text-[10px] md:text-xs text-gray-500 font-bold">الرئيسية</span>
           </button>
         </div>
+      </div>
+
+      {/* ====== تايمر مدة المحاضرة العائم ====== */}
+      <div className="lecture-timer-badge">
+        <span className="timer-label">مدة المحاضرة</span>
+        <span className="timer-display">{formatElapsed(lectureElapsed)}</span>
+        <span className="timer-date">١٩ مارس ٢٠٢٦ — ٩:٠٠ م</span>
       </div>
 
       {/* Scroll to top */}
