@@ -1699,11 +1699,11 @@ export default function Home() {
                 </filter>
               </defs>
               {/* Orbit ellipse 1 - tilted */}
-              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(100,200,255,0.5)" strokeWidth="1" transform="rotate(-30 30 30)" />
+              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(0,0,0,0.75)" strokeWidth="1" transform="rotate(-30 30 30)" />
               {/* Orbit ellipse 2 - tilted other way */}
-              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(100,200,255,0.4)" strokeWidth="1" transform="rotate(30 30 30)" />
+              <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="rgba(0,0,0,0.65)" strokeWidth="1" transform="rotate(30 30 30)" />
               {/* Orbit ellipse 3 - vertical */}
-              <ellipse cx="30" cy="30" rx="9" ry="26" fill="none" stroke="rgba(100,200,255,0.35)" strokeWidth="1" />
+              <ellipse cx="30" cy="30" rx="9" ry="26" fill="none" stroke="rgba(0,0,0,0.55)" strokeWidth="1" />
               {/* Nucleus - 3D sphere */}
               <circle cx="30" cy="30" r="6" fill="url(#nucleusGrad)" filter="url(#atomGlow)" />
               {/* Nucleus highlight */}
