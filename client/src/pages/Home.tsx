@@ -55,7 +55,22 @@ function saveAttendanceRecord(record: AttendanceRecord) {
   }
 }
 
+function isExamTaken(name: string, employeeId: string): boolean {
+  const records = getAttendanceRecords();
+  return records.some(r => 
+    (r.name.trim() === name.trim() && r.employeeId.trim() === employeeId.trim()) ||
+    (r.employeeId && r.employeeId.trim() === employeeId.trim() && employeeId.trim() !== '')
+  );
+}
+
+const SUPERVISOR_PIN = '0192';
+
 function exportAttendanceToExcel() {
+  const pin = prompt('أدخل رمز المشرف (PIN):');
+  if (pin !== SUPERVISOR_PIN) {
+    alert('رمز المشرف غير صحيح');
+    return;
+  }
   const records = getAttendanceRecords();
   if (records.length === 0) {
     alert('لا توجد سجلات حضور بعد');
@@ -939,14 +954,21 @@ function MCQAssessment() {
                 <li>• سيتم إرسال النتيجة بالبريد الإلكتروني</li>
               </ul>
             </div>
-            <button
-              onClick={startExam}
-              disabled={!studentName.trim()}
-              className="w-full bg-[#c62828] text-white py-4 rounded-xl text-base md:text-lg font-bold hover:bg-[#b71c1c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              <BookOpen size={20} />
-              ابدأ التقييم
-            </button>
+            {isExamTaken(studentName, studentId) && studentName.trim() ? (
+              <div className="w-full bg-orange-100 text-orange-800 py-4 rounded-xl text-base md:text-lg font-bold text-center border border-orange-300">
+                <AlertTriangle size={20} className="inline ml-2" />
+                لقد أجريت التقييم مسبقاً - فرصة واحدة فقط لكل موظف
+              </div>
+            ) : (
+              <button
+                onClick={startExam}
+                disabled={!studentName.trim()}
+                className="w-full bg-[#c62828] text-white py-4 rounded-xl text-base md:text-lg font-bold hover:bg-[#b71c1c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <BookOpen size={20} />
+                ابدأ التقييم
+              </button>
+            )}
           </motion.div>
         ) : null}
       </div>
@@ -1244,7 +1266,6 @@ export default function Home() {
     <div className="min-h-screen bg-[#fafafa] relative" dir="rtl">
       <SRCAWatermark />
       <FloatingMedicalIcons />
-      <DesignerCredit />
       <SidebarMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} onNavigate={scrollTo} />
 
       {/* ===== HERO SECTION ===== */}
@@ -1352,6 +1373,18 @@ export default function Home() {
             <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs md:text-sm text-white font-bold">سيناريوهات تفاعلية</span>
             <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs md:text-sm text-white font-bold">تقييم MCQ</span>
           </div>
+          {/* QR Code in Hero */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.1 }}
+            className="mb-5"
+          >
+            <div className="w-28 h-28 md:w-32 md:h-32 mx-auto bg-white rounded-2xl shadow-lg p-2 border-2 border-white/30">
+              <img src={QR_CODE_URL} alt="QR Code" className="w-full h-full object-contain" />
+            </div>
+            <p className="text-[10px] md:text-xs text-white/50 mt-2 font-mono">امسح للوصول المباشر</p>
+          </motion.div>
           <button
             onClick={() => scrollTo("intro")}
             className="inline-flex items-center gap-2 bg-[#c62828] text-white px-10 py-4 rounded-full text-base md:text-lg font-bold hover:bg-[#b71c1c] transition-all shadow-lg hover:shadow-xl animate-pulse-red"
@@ -1415,21 +1448,6 @@ export default function Home() {
 
         {/* MCQ Assessment */}
         <MCQAssessment />
-
-        {/* QR Code Section */}
-        <div className="mb-10">
-          <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 text-center">
-            <h3 className="text-lg md:text-xl font-bold text-gray-800 font-[Tajawal] mb-2 flex items-center justify-center gap-2">
-              <span className="text-2xl">📱</span>
-              شارك المحاضرة
-            </h3>
-            <p className="text-sm md:text-base text-gray-500 mb-4">امسح الكود للوصول المباشر للمحاضرة</p>
-            <div className="w-40 h-40 md:w-48 md:h-48 mx-auto bg-white rounded-2xl shadow-md p-3 border border-gray-200">
-              <img src={QR_CODE_URL} alt="QR Code - رابط المحاضرة" className="w-full h-full object-contain" />
-            </div>
-            <p className="text-xs text-gray-400 mt-3 font-mono">srcadrive997-maker.github.io/SRCA-OHS-Lecture</p>
-          </div>
-        </div>
 
         {/* References - Dynamic from lectureContent */}
         <div className="mb-10">
