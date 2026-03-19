@@ -1742,7 +1742,7 @@ export default function Home() {
             {[
               { id: "intro", icon: "📋", label: "المقدمة" },
               { id: "module1", icon: "👨‍⚕️", label: "المسؤولون" },
-              { id: "module2", icon: "☢️", label: "CBRN" },
+              { id: "module2", icon: "☢️", label: "CBRNE" },
               { id: "module3", icon: "🧹", label: "التطهير" },
               { id: "module4", icon: "🚧", label: "الموقع" },
               { id: "module5", icon: "🚑", label: "المركبات" },
