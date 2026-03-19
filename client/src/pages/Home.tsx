@@ -1163,8 +1163,14 @@ function MCQAssessment() {
                 <input
                   type="text"
                   value={studentName}
-                  onChange={(e) => setStudentName(e.target.value)}
-                  placeholder="أدخل اسمك الكامل"
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    // Allow Arabic letters, English letters, and spaces only
+                    if (/^[\u0600-\u06FFa-zA-Z\s]*$/.test(val)) {
+                      setStudentName(val);
+                    }
+                  }}
+                  placeholder="أدخل اسمك الكامل (حروف فقط)"
                   className="w-full p-4 border border-gray-200 rounded-xl text-base focus:border-amber-400 focus:ring-2 focus:ring-amber-400 outline-none"
                 />
               </div>
@@ -1195,9 +1201,16 @@ function MCQAssessment() {
                 <label className="text-sm md:text-base font-bold text-gray-600 mb-2 block">الرقم الوظيفي</label>
                 <input
                   type="text"
+                  inputMode="numeric"
                   value={studentId}
-                  onChange={(e) => setStudentId(e.target.value)}
-                  placeholder="أدخل رقمك الوظيفي (اختياري)"
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    // Allow digits only
+                    if (/^[0-9]*$/.test(val)) {
+                      setStudentId(val);
+                    }
+                  }}
+                  placeholder="أدخل رقمك الوظيفي (أرقام فقط)"
                   className="w-full p-4 border border-gray-200 rounded-xl text-base focus:border-amber-400 focus:ring-2 focus:ring-amber-400 outline-none"
                 />
               </div>
