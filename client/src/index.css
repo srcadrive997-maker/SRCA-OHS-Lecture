@@ -407,3 +407,18 @@ html {
     font-size: 1.1rem;
   }
 }
+
+/* ====== Hourglass Flip Animation ====== */
+.hourglass-spin {
+  display: inline-block;
+  animation: hourglass-flip 2s ease-in-out infinite;
+  transform-origin: center;
+  filter: drop-shadow(0 0 4px rgba(255, 100, 100, 0.7));
+}
+@keyframes hourglass-flip {
+  0%   { transform: rotate(0deg);   }
+  45%  { transform: rotate(0deg);   }
+  50%  { transform: rotate(180deg); }
+  95%  { transform: rotate(180deg); }
+  100% { transform: rotate(360deg); }
+}

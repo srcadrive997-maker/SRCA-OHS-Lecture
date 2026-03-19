@@ -1675,6 +1675,14 @@ export default function Home() {
 
       {/* ===== NAVIGATION TABS ===== */}
       <div className="sticky top-0 z-40 bg-white shadow-sm border-b">
+        {/* تايمر المحاضرة في الترويسة */}
+        <div className="flex items-center justify-between px-3 py-1 bg-gray-900 border-b border-gray-700">
+          <div className="flex items-center gap-1.5">
+            <span className="hourglass-spin text-base">&#x231B;</span>
+            <span className="font-mono text-sm font-bold text-red-400 tracking-widest">{formatElapsed(lectureElapsed)}</span>
+          </div>
+          <span className="text-[10px] text-gray-400 font-[Tajawal]">١٩ مارس ٢٠٢٦ — ٩:٠٠ م</span>
+        </div>
         <div className="overflow-x-auto scrollbar-hide">
           <div className="flex gap-1.5 p-2.5 min-w-max">
             {[
@@ -1826,13 +1834,6 @@ export default function Home() {
             <span className="text-[10px] md:text-xs text-gray-500 font-bold">الرئيسية</span>
           </button>
         </div>
-      </div>
-
-      {/* ====== تايمر مدة المحاضرة العائم ====== */}
-      <div className="lecture-timer-badge">
-        <span className="timer-label">مدة المحاضرة</span>
-        <span className="timer-display">{formatElapsed(lectureElapsed)}</span>
-        <span className="timer-date">١٩ مارس ٢٠٢٦ — ٩:٠٠ م</span>
       </div>
 
       {/* Scroll to top */}
