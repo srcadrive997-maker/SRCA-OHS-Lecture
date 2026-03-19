@@ -27,6 +27,25 @@ import {
   Download, Users
 } from "lucide-react";
 
+// ============ GOOGLE SHEETS CONFIG ============
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycby-w0KuuL-qWEPsMDrDoYAmhJRV_HE4NvLsVDRGR0IH28hN6VB6F9g93qOTkhSrqWOTQA/exec';
+
+// Component to show attendance count from Google Sheets
+function SheetsAttendanceCount() {
+  const [count, setCount] = useState<number | null>(null);
+  useEffect(() => {
+    fetch(SHEETS_URL)
+      .then(r => r.json())
+      .then(d => setCount(d.count ?? 0))
+      .catch(() => setCount(null));
+  }, []);
+  return (
+    <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-bold">
+      {count === null ? '...' : count} حاضر
+    </span>
+  );
+}
+
 // ============ ATTENDANCE TRACKING ============
 interface AttendanceRecord {
   name: string;
@@ -1051,6 +1070,7 @@ function MCQAssessment() {
         timestamp: new Date().toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' }),
         name: studentName,
         employeeId: studentId || "غير محدد",
+        branch: studentBranch || "غير محدد",
         result: passed ? "ناجح" : "راسب",
         correctCount: score.toString(),
         totalQuestions: questions.length.toString(),
@@ -1058,7 +1078,7 @@ function MCQAssessment() {
         details: results
       };
 
-      await fetch('https://script.google.com/macros/s/AKfycbys6qEPdWFoM4w5-JPKC0fkEH3yWl_QZNnrES7d3beK1ZruFLjuNV5WnJLk3zIAwOOLug/exec', {
+      await fetch('https://script.google.com/macros/s/AKfycby-w0KuuL-qWEPsMDrDoYAmhJRV_HE4NvLsVDRGR0IH28hN6VB6F9g93qOTkhSrqWOTQA/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
@@ -1308,9 +1328,7 @@ function MCQAssessment() {
                   <Users size={20} className="text-blue-600" />
                   <span className="text-sm md:text-base font-bold text-blue-800">سجل الحضور</span>
                 </div>
-                <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-bold">
-                  {getAttendanceRecords().length} حاضر
-                </span>
+                <SheetsAttendanceCount />
               </div>
               <p className="text-xs md:text-sm text-blue-600 mb-3">يتم تسجيل كل من أجاب على الأسئلة تلقائياً كحاضر</p>
               <button

@@ -681,7 +681,29 @@ export const questionBank: Question[] = [
   }
 ];
 
+// Shuffle options for a question and return new question with shuffled options and updated key
+function shuffleQuestionOptions(q: Question): Question {
+  const correctIdx = _d(q._k);
+  
+  // Create array of {option, isCorrect}
+  const optionsWithFlag = q.options.map((opt, i) => ({ opt, isCorrect: i === correctIdx }));
+  
+  // Fisher-Yates shuffle
+  for (let i = optionsWithFlag.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [optionsWithFlag[i], optionsWithFlag[j]] = [optionsWithFlag[j], optionsWithFlag[i]];
+  }
+  
+  const newCorrectIdx = optionsWithFlag.findIndex(o => o.isCorrect);
+  
+  return {
+    ...q,
+    options: optionsWithFlag.map(o => o.opt),
+    _k: _e(newCorrectIdx)
+  };
+}
+
 export function getRandomQuestions(count: number = 20): Question[] {
   const shuffled = [...questionBank].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
+  return shuffled.slice(0, count).map(q => shuffleQuestionOptions(q));
 }
