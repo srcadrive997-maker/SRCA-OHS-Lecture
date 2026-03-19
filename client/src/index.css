@@ -152,16 +152,27 @@
   will-change: transform, opacity;
 }
 
+/* 3D Logo Container */
+.logo-3d-container {
+  perspective: 800px;
+  transform-style: preserve-3d;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* Circular Embossed Stamp Watermark */
 .designer-stamp {
-  filter: drop-shadow(1px 1px 0px rgba(139, 115, 85, 0.15)) drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3));
+  filter: drop-shadow(1px 1px 0px rgba(123, 101, 68, 0.2)) drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.35)) drop-shadow(0 0 3px rgba(123, 101, 68, 0.1));
   transform: rotate(-15deg);
   transition: all 0.5s ease;
 }
 
 .designer-stamp:hover {
-  filter: drop-shadow(1px 1px 1px rgba(139, 115, 85, 0.25)) drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.4));
-  transform: rotate(-12deg) scale(1.05);
+  filter: drop-shadow(1px 1px 1px rgba(123, 101, 68, 0.3)) drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.45)) drop-shadow(0 0 5px rgba(123, 101, 68, 0.15));
+  transform: rotate(-12deg) scale(1.08);
 }
 
 /* Scrollbar styling */

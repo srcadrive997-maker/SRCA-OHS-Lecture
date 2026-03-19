@@ -91,27 +91,41 @@ function SRCAWatermark() {
   );
 }
 
-// ============ DESIGNER CREDIT - CIRCULAR EMBOSSED STAMP ============
+// ============ DESIGNER CREDIT - CIRCULAR EMBOSSED STAMP (MORE APPARENT) ============
 function DesignerCredit() {
   return (
-    <div className="fixed bottom-20 left-3 z-50 opacity-20 hover:opacity-50 transition-opacity duration-500 pointer-events-none hover:pointer-events-auto">
-      <div className="designer-stamp" style={{ width: 72, height: 72 }}>
-        <svg viewBox="0 0 120 120" width="72" height="72">
-          <circle cx="60" cy="60" r="56" fill="none" stroke="#8B7355" strokeWidth="2.5" opacity="0.7" />
-          <circle cx="60" cy="60" r="50" fill="none" stroke="#8B7355" strokeWidth="1" opacity="0.5" />
-          <circle cx="60" cy="60" r="44" fill="none" stroke="#8B7355" strokeWidth="0.5" opacity="0.4" strokeDasharray="3 2" />
+    <div className="fixed bottom-20 left-3 z-50 opacity-40 hover:opacity-70 transition-opacity duration-500">
+      <div className="designer-stamp" style={{ width: 85, height: 85 }}>
+        <svg viewBox="0 0 120 120" width="85" height="85">
+          {/* Outer double ring */}
+          <circle cx="60" cy="60" r="57" fill="none" stroke="#7B6544" strokeWidth="2" />
+          <circle cx="60" cy="60" r="54" fill="none" stroke="#7B6544" strokeWidth="3" />
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#7B6544" strokeWidth="1" />
+          {/* Inner decorative ring */}
+          <circle cx="60" cy="60" r="44" fill="none" stroke="#7B6544" strokeWidth="0.8" strokeDasharray="4 2" />
+          {/* Small decorative dots around inner circle */}
+          {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => (
+            <circle
+              key={angle}
+              cx={60 + 47 * Math.cos((angle * Math.PI) / 180)}
+              cy={60 + 47 * Math.sin((angle * Math.PI) / 180)}
+              r="1.2"
+              fill="#7B6544"
+            />
+          ))}
           <defs>
-            <path id="topArc" d="M 20,60 a 40,40 0 1,1 80,0" />
-            <path id="bottomArc" d="M 100,60 a 40,40 0 1,1 -80,0" />
+            <path id="topArc" d="M 18,60 a 42,42 0 1,1 84,0" />
+            <path id="bottomArc" d="M 102,60 a 42,42 0 1,1 -84,0" />
           </defs>
-          <text fontSize="7.5" fontFamily="Georgia, serif" fill="#8B7355" opacity="0.8" letterSpacing="3">
+          <text fontSize="8" fontFamily="Georgia, serif" fill="#7B6544" fontWeight="bold" letterSpacing="3.5">
             <textPath href="#topArc" startOffset="50%" textAnchor="middle">DESIGNED BY</textPath>
           </text>
-          <text fontSize="6" fontFamily="Georgia, serif" fill="#8B7355" opacity="0.8" letterSpacing="1.5">
+          <text fontSize="6.5" fontFamily="Georgia, serif" fill="#7B6544" fontWeight="bold" letterSpacing="2">
             <textPath href="#bottomArc" startOffset="50%" textAnchor="middle">METWALLY A. HELWA</textPath>
           </text>
-          <text x="60" y="58" textAnchor="middle" fontSize="10" fill="#8B7355" opacity="0.6" fontFamily="serif">&#9733;</text>
-          <text x="60" y="68" textAnchor="middle" fontSize="5.5" fill="#8B7355" opacity="0.6" fontFamily="Georgia, serif" letterSpacing="0.5">SRCA</text>
+          {/* Center emblem */}
+          <text x="60" y="56" textAnchor="middle" fontSize="12" fill="#7B6544" fontFamily="serif">&#9733;</text>
+          <text x="60" y="68" textAnchor="middle" fontSize="6.5" fill="#7B6544" fontFamily="Georgia, serif" fontWeight="bold" letterSpacing="1">SRCA</text>
         </svg>
       </div>
     </div>
@@ -1109,19 +1123,75 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
         </div>
         <div className="relative z-10 px-5 py-10 md:py-16 text-center">
-          {/* Official SRCA Logo - Prominent Circular */}
+          {/* Official SRCA Logo - 3D Shiny Engraved with Glowing Stars */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="mb-5"
+            initial={{ opacity: 0, scale: 0.5, rotateY: 180 }}
+            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="mb-5 relative"
           >
-            <div className="w-28 h-28 md:w-36 md:h-36 mx-auto rounded-full overflow-hidden border-4 border-white/30 shadow-2xl bg-white p-1">
-              <img
-                src={SRCA_LOGO_OFFICIAL}
-                alt="هيئة الهلال الأحمر السعودي"
-                className="w-full h-full object-contain rounded-full"
-              />
+            {/* Glowing white stars around the logo */}
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
+              <motion.div
+                key={angle}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: [0, 1, 0.5, 1], scale: [0, 1.2, 0.8, 1] }}
+                transition={{ delay: 1.2 + i * 0.15, duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                className="absolute"
+                style={{
+                  top: `calc(50% + ${Math.sin((angle * Math.PI) / 180) * 85}px - 6px)`,
+                  left: `calc(50% + ${Math.cos((angle * Math.PI) / 180) * 85}px - 6px)`,
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24">
+                  <path d="M12 0L14.59 8.41L23 12L14.59 15.59L12 24L9.41 15.59L1 12L9.41 8.41Z" fill="white" opacity="0.9">
+                    <animate attributeName="opacity" values="0.4;1;0.4" dur={`${1.5 + i * 0.2}s`} repeatCount="indefinite" />
+                  </path>
+                </svg>
+              </motion.div>
+            ))}
+            {/* Additional sparkle stars (smaller, between main stars) */}
+            {[22, 67, 112, 157, 202, 247, 292, 337].map((angle, i) => (
+              <motion.div
+                key={`spark-${angle}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 0.8, 0.3, 0.8] }}
+                transition={{ delay: 1.8 + i * 0.1, duration: 1.8, repeat: Infinity, repeatType: "reverse" }}
+                className="absolute"
+                style={{
+                  top: `calc(50% + ${Math.sin((angle * Math.PI) / 180) * 95}px - 4px)`,
+                  left: `calc(50% + ${Math.cos((angle * Math.PI) / 180) * 95}px - 4px)`,
+                }}
+              >
+                <svg width="8" height="8" viewBox="0 0 24 24">
+                  <path d="M12 0L14.59 8.41L23 12L14.59 15.59L12 24L9.41 15.59L1 12L9.41 8.41Z" fill="white" opacity="0.7" />
+                </svg>
+              </motion.div>
+            ))}
+            {/* 3D Shiny Logo Container */}
+            <div className="logo-3d-container w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full overflow-hidden relative">
+              {/* Outer glow ring */}
+              <div className="absolute inset-0 rounded-full" style={{
+                background: 'conic-gradient(from 0deg, rgba(255,255,255,0.1), rgba(255,255,255,0.4), rgba(255,255,255,0.1), rgba(255,255,255,0.3), rgba(255,255,255,0.1))',
+                animation: 'spin 6s linear infinite',
+                padding: '3px',
+              }} />
+              {/* Inner container with 3D effect */}
+              <div className="absolute inset-[3px] rounded-full bg-white p-1 shadow-[0_0_30px_rgba(255,255,255,0.3),0_0_60px_rgba(255,255,255,0.15),inset_0_2px_4px_rgba(255,255,255,0.8),inset_0_-2px_4px_rgba(0,0,0,0.1)]">
+                <img
+                  src={SRCA_LOGO_OFFICIAL}
+                  alt="هيئة الهلال الأحمر السعودي"
+                  className="w-full h-full object-contain rounded-full"
+                  style={{
+                    filter: 'contrast(1.1) saturate(1.2) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+                  }}
+                />
+                {/* Shine overlay */}
+                <div className="absolute inset-0 rounded-full" style={{
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.15) 100%)',
+                  pointerEvents: 'none',
+                }} />
+              </div>
             </div>
           </motion.div>
           {/* Organization hierarchy */}
@@ -1258,25 +1328,35 @@ export default function Home() {
           <p className="text-xs text-gray-400">إدارة الشؤون الطبية بالمدينة المنورة</p>
           <p className="text-xs text-gray-400 mt-1">الدكتورة تسنيم الفريدي — مدير إدارة الشؤون الطبية</p>
           <p className="text-xs text-gray-400">د. متولي أمين حلوة — قسم التحكم الطبي</p>
-          {/* Circular Embossed Stamp */}
+          {/* Circular Embossed Stamp - More Apparent */}
           <div className="mt-4 flex justify-center">
-            <div className="designer-stamp" style={{ width: 60, height: 60 }}>
-              <svg viewBox="0 0 120 120" width="60" height="60" opacity="0.3">
-                <circle cx="60" cy="60" r="56" fill="none" stroke="#8B7355" strokeWidth="2.5" />
-                <circle cx="60" cy="60" r="50" fill="none" stroke="#8B7355" strokeWidth="1" />
-                <circle cx="60" cy="60" r="44" fill="none" stroke="#8B7355" strokeWidth="0.5" strokeDasharray="3 2" />
+            <div className="designer-stamp" style={{ width: 75, height: 75 }}>
+              <svg viewBox="0 0 120 120" width="75" height="75" opacity="0.5">
+                <circle cx="60" cy="60" r="57" fill="none" stroke="#7B6544" strokeWidth="2" />
+                <circle cx="60" cy="60" r="54" fill="none" stroke="#7B6544" strokeWidth="3" />
+                <circle cx="60" cy="60" r="50" fill="none" stroke="#7B6544" strokeWidth="1" />
+                <circle cx="60" cy="60" r="44" fill="none" stroke="#7B6544" strokeWidth="0.8" strokeDasharray="4 2" />
+                {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => (
+                  <circle
+                    key={angle}
+                    cx={60 + 47 * Math.cos((angle * Math.PI) / 180)}
+                    cy={60 + 47 * Math.sin((angle * Math.PI) / 180)}
+                    r="1.2"
+                    fill="#7B6544"
+                  />
+                ))}
                 <defs>
-                  <path id="topArcF" d="M 20,60 a 40,40 0 1,1 80,0" />
-                  <path id="bottomArcF" d="M 100,60 a 40,40 0 1,1 -80,0" />
+                  <path id="topArcF" d="M 18,60 a 42,42 0 1,1 84,0" />
+                  <path id="bottomArcF" d="M 102,60 a 42,42 0 1,1 -84,0" />
                 </defs>
-                <text fontSize="7.5" fontFamily="Georgia, serif" fill="#8B7355" letterSpacing="3">
+                <text fontSize="8" fontFamily="Georgia, serif" fill="#7B6544" fontWeight="bold" letterSpacing="3.5">
                   <textPath href="#topArcF" startOffset="50%" textAnchor="middle">DESIGNED BY</textPath>
                 </text>
-                <text fontSize="6" fontFamily="Georgia, serif" fill="#8B7355" letterSpacing="1.5">
+                <text fontSize="6.5" fontFamily="Georgia, serif" fill="#7B6544" fontWeight="bold" letterSpacing="2">
                   <textPath href="#bottomArcF" startOffset="50%" textAnchor="middle">METWALLY A. HELWA</textPath>
                 </text>
-                <text x="60" y="58" textAnchor="middle" fontSize="10" fill="#8B7355" fontFamily="serif">&#9733;</text>
-                <text x="60" y="68" textAnchor="middle" fontSize="5.5" fill="#8B7355" fontFamily="Georgia, serif" letterSpacing="0.5">SRCA</text>
+                <text x="60" y="56" textAnchor="middle" fontSize="12" fill="#7B6544" fontFamily="serif">&#9733;</text>
+                <text x="60" y="68" textAnchor="middle" fontSize="6.5" fill="#7B6544" fontFamily="Georgia, serif" fontWeight="bold" letterSpacing="1">SRCA</text>
               </svg>
             </div>
           </div>
