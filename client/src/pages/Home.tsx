@@ -150,14 +150,14 @@ const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dij
 const INFECTION_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/infection-control_cf638033.png";
 const LIFTING_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/safe-lifting_a3c4f9d1.png";
 const MENTAL_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/mental-health_b9163187.png";
-const AMBULANCE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/ambulance-safety_a7caf1db.png";
+const AMBULANCE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/ambulance-safety_128af77b.png";
 const SRCA_LOGO = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/SRCAlogo_intl_cmyk_91eb8305.webp";
 const SRCA_LOGO_OFFICIAL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/SRCAlogo_local_rgb_99f6fdc0.jpg";
 const QR_CODE_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/SRCA-OHS-QR-Code_31131e2a.png";
-const CBRNE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/srca-hero-cbrne_f367514b.png";
-const TRIAGE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/srca-triage-scene_9e84dd64.png";
+const CBRNE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/cbrn-response_ebb88f07.png";
+const TRIAGE_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/triage-scene_04a09951.png";
 const RADIATION_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/srca-radiation-response_11afd489.png";
-const CHEMICAL_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/srca-chemical-decon_46b59761.png";
+const CHEMICAL_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663029254634/dijtbjEZMruKmvJ8fjWPKo/chemical-decon_7548a398.png";
 
 // ============ FLOATING GLOWING MEDICAL ICONS ============
 function FloatingMedicalIcons() {
@@ -1611,7 +1611,7 @@ export default function Home() {
             transition={{ delay: 0.3 }}
             className="mb-4 space-y-1"
           >
-            <p className="text-sm md:text-base text-white/90 font-bold font-[Tajawal]">هيئة الهلال الأحمر السعودي</p>
+            <p className="srca-title-engraved">هيئة الهلال الأحمر السعودي</p>
             <p className="text-xs md:text-sm text-white/70 font-[Tajawal]">الإدارة العامة للشؤون الطبية</p>
             <p className="text-xs md:text-sm text-white/70 font-[Tajawal]">إدارة الشؤون الطبية بالمدينة المنورة</p>
           </motion.div>
@@ -1642,9 +1642,10 @@ export default function Home() {
             <p className="text-xs md:text-sm text-white/70 font-[Tajawal] mb-2">
               📅 ١٩ مارس ٢٠٢٦ — الساعة ٩:٠٠ مساءً
             </p>
-            {/* أسماء محفورة ثلاثية الأبعاد */}
-            <p className="name-engraved-hero text-sm md:text-base">الدكتورة تسنيم الفريدي — مدير إدارة الشؤون الطبية</p>
-            <p className="name-engraved-hero text-sm md:text-base" style={{animationDelay:'0.2s'}}>د. متولي أمين حلوة — قسم التحكم الطبي</p>
+            {/* أسماء محفورة ثلاثية الأبعاد - كل اسم في سطر مستقل */}
+            <p className="name-engraved-hero text-sm md:text-base block">الدكتورة تسنيم الفريدي — مدير إدارة الشؤون الطبية</p>
+            <div className="h-2" />
+            <p className="name-engraved-hero text-sm md:text-base block" style={{animationDelay:'0.2s'}}>د. متولي أمين حلوة — قسم التحكم الطبي</p>
           </motion.div>
           <div className="flex flex-wrap justify-center gap-3 mb-6">
             <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs md:text-sm text-white font-bold">7 أقسام رئيسية</span>
@@ -1762,10 +1763,11 @@ export default function Home() {
           <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-gray-200 bg-white p-0.5 opacity-60">
             <img src={SRCA_LOGO_OFFICIAL} alt="هيئة الهلال الأحمر السعودي" className="w-full h-full object-contain rounded-full" />
           </div>
-          <p className="text-sm text-gray-400">هيئة الهلال الأحمر السعودي</p>
+          <p className="srca-title-engraved-footer">هيئة الهلال الأحمر السعودي</p>
           <p className="text-sm text-gray-400">الإدارة العامة للشؤون الطبية</p>
           <p className="text-xs text-gray-400">إدارة الشؤون الطبية بالمدينة المنورة</p>
           <p className="name-engraved-footer mt-1">الدكتورة تسنيم الفريدي — مدير إدارة الشؤون الطبية</p>
+          <div className="h-1" />
           <p className="name-engraved-footer">د. متولي أمين حلوة — قسم التحكم الطبي</p>
           {/* Circular Embossed Stamp - More Apparent */}
           <div className="mt-4 flex justify-center">
