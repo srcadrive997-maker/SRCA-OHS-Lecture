@@ -1036,6 +1036,52 @@ function MCQAssessment() {
     return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
+  // Send results to Google Sheets
+  const sendToGoogleSheets = async () => {
+    try {
+      const results = questions.map((q, i) => {
+        const userAnswer = answers[i] !== undefined ? q.options[answers[i]] : "لم يُجب";
+        const correctIdx = getCorrectIndex(q);
+        const correct = q.options[correctIdx];
+        const isCorrect = answers[i] !== undefined && verifyAnswer(q, answers[i]);
+        return `س${i + 1}: ${isCorrect ? "✅" : "❌"} ${userAnswer}`;
+      }).join(" | ");
+
+      const payload = {
+        timestamp: new Date().toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' }),
+        name: studentName,
+        employeeId: studentId || "غير محدد",
+        result: passed ? "ناجح" : "راسب",
+        correctCount: score.toString(),
+        totalQuestions: questions.length.toString(),
+        percentage: percentage.toString() + "%",
+        details: results
+      };
+
+      await fetch('https://script.google.com/macros/s/AKfycbys6qEPdWFoM4w5-JPKC0fkEH3yWl_QZNnrES7d3beK1ZruFLjuNV5WnJLk3zIAwOOLug/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      console.log('Results sent to Google Sheets');
+    } catch (error) {
+      console.error('Google Sheets error:', error);
+    }
+  };
+
+  // Auto-send to Google Sheets when exam finishes
+  const sheetsSentRef = useRef(false);
+  useEffect(() => {
+    if (finished && studentName && !sheetsSentRef.current) {
+      sheetsSentRef.current = true;
+      const s = questions.reduce((acc, q, i) => acc + (answers[i] !== undefined && verifyAnswer(q, answers[i]) ? 1 : 0), 0);
+      if (questions.length > 0) {
+        sendToGoogleSheets();
+      }
+    }
+  }, [finished]);
+
   const sendResults = async () => {
     setEmailSending(true);
     const results = questions.map((q, i) => {
