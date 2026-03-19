@@ -1058,14 +1058,6 @@ function MCQAssessment() {
   // Send results to Google Sheets
   const sendToGoogleSheets = async () => {
     try {
-      const results = questions.map((q, i) => {
-        const userAnswer = answers[i] !== undefined ? q.options[answers[i]] : "لم يُجب";
-        const correctIdx = getCorrectIndex(q);
-        const correct = q.options[correctIdx];
-        const isCorrect = answers[i] !== undefined && verifyAnswer(q, answers[i]);
-        return `س${i + 1}: ${isCorrect ? "✅" : "❌"} ${userAnswer}`;
-      }).join(" | ");
-
       const payload = {
         timestamp: new Date().toLocaleString('ar-SA', { timeZone: 'Asia/Riyadh' }),
         name: studentName,
@@ -1074,8 +1066,7 @@ function MCQAssessment() {
         result: passed ? "ناجح" : "راسب",
         correctCount: score.toString(),
         totalQuestions: questions.length.toString(),
-        percentage: percentage.toString() + "%",
-        details: results
+        percentage: percentage.toString() + "%"
       };
 
       await fetch('https://script.google.com/macros/s/AKfycby-w0KuuL-qWEPsMDrDoYAmhJRV_HE4NvLsVDRGR0IH28hN6VB6F9g93qOTkhSrqWOTQA/exec', {

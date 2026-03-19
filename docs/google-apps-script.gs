@@ -4,7 +4,7 @@
  * كل إدخال جديد يُضاف كصف جديد في الورقة (لا يُحذف أي شيء)
  * 
  * الورقة الأولى (Sheet1): نتائج MCQ
- * الأعمدة: الوقت | الاسم | الرقم الوظيفي | الفرع | النتيجة | الدرجة | الإجمالي | النسبة% | تفاصيل الإجابات
+ * الأعمدة: الوقت | الاسم | الرقم الوظيفي | الفرع | النتيجة | الدرجة | الإجمالي | النسبة%
  */
 
 // ====== doGet: يُعيد عدد الصفوف (الحضور) ======
@@ -34,18 +34,17 @@ function doGet(e) {
 function getRecords(sheet) {
   var lastRow = sheet.getLastRow();
   if (lastRow < 2) return [];
-  var data = sheet.getRange(2, 1, lastRow - 1, 9).getValues();
+  var data = sheet.getRange(2, 1, lastRow - 1, 8).getValues();
   return data.map(function(row) {
     return {
-      timestamp:     row[0],
-      name:          row[1],
-      employeeId:    row[2],
-      branch:        row[3],
-      result:        row[4],
-      correctCount:  row[5],
-      totalQuestions:row[6],
-      percentage:    row[7],
-      details:       row[8]
+      timestamp:      row[0],
+      name:           row[1],
+      employeeId:     row[2],
+      branch:         row[3],
+      result:         row[4],
+      correctCount:   row[5],
+      totalQuestions: row[6],
+      percentage:     row[7]
     };
   });
 }
@@ -66,11 +65,10 @@ function doPost(e) {
         "النتيجة",
         "الدرجة",
         "الإجمالي",
-        "النسبة%",
-        "تفاصيل الإجابات"
+        "النسبة%"
       ]);
       // تنسيق رأس الجدول
-      sheet.getRange(1, 1, 1, 9).setFontWeight("bold").setBackground("#c62828").setFontColor("#ffffff");
+      sheet.getRange(1, 1, 1, 8).setFontWeight("bold").setBackground("#c62828").setFontColor("#ffffff");
     }
     
     // قراءة البيانات المُرسلة
@@ -78,15 +76,14 @@ function doPost(e) {
     
     // ====== إضافة الصف الجديد (تراكمي - لا يُحذف شيء) ======
     sheet.appendRow([
-      data.timestamp     || new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}),
-      data.name          || "غير محدد",
-      data.employeeId    || "غير محدد",
-      data.branch        || "غير محدد",
-      data.result        || "غير محدد",   // ناجح / راسب
-      data.correctCount  || "0",           // عدد الإجابات الصحيحة
-      data.totalQuestions|| "20",          // إجمالي الأسئلة
-      data.percentage    || "0%",          // النسبة المئوية
-      data.details       || ""             // تفاصيل الإجابات
+      data.timestamp      || new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}),
+      data.name           || "غير محدد",
+      data.employeeId     || "غير محدد",
+      data.branch         || "غير محدد",
+      data.result         || "غير محدد",   // ناجح / راسب
+      data.correctCount   || "0",           // عدد الإجابات الصحيحة
+      data.totalQuestions || "20",          // إجمالي الأسئلة
+      data.percentage     || "0%"           // النسبة المئوية
     ]);
     
     // تلوين الصف حسب النتيجة
