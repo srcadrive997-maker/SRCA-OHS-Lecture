@@ -1222,7 +1222,6 @@ function MCQAssessment() {
                 <li>• المدة: 20 دقيقة - يُغلق التقييم تلقائياً بعد انتهاء الوقت</li>
                 <li>• نسبة النجاح: 60% (12 إجابة صحيحة من 20)</li>
                 <li>• يمكنك التنقل بين الأسئلة بالأسهم</li>
-                <li>• سيتم إرسال النتيجة بالبريد الإلكتروني</li>
               </ul>
             </div>
             {isExamTaken(studentName, studentId) && studentName.trim() ? (
@@ -1313,17 +1312,6 @@ function MCQAssessment() {
               ) : (
                 <><Send size={20} /> إرسال النتيجة تلقائياً للمشرف</>
               )}
-            </button>
-            <button
-              onClick={() => {
-                setStarted(false);
-                setShowNameForm(true);
-                setFinished(false);
-                setEmailSent(false);
-              }}
-              className="w-full bg-gray-100 text-gray-700 py-4 rounded-xl text-base md:text-lg font-bold hover:bg-gray-200 transition-colors"
-            >
-              إعادة التقييم
             </button>
             {/* Attendance Export Section */}
             <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-200">
