@@ -13,6 +13,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import * as XLSX from "xlsx";
 import emailjs from "@emailjs/browser";
 import { sections, pitfalls, goldenRules, interactiveScenarios, lectureTitle, lectureSubtitle, references } from "@/data/lectureContent";
+import { fieldProtocols } from "@/data/fieldProtocols";
+import type { FieldProtocol } from "@/data/fieldProtocols";
 import { getRandomQuestions, verifyAnswer, getCorrectIndex } from "@/data/questionBank";
 import type { Question } from "@/data/questionBank";
 import type { Section, ContentBlock } from "@/data/lectureContent";
@@ -530,6 +532,132 @@ function SectionRenderer({ section, sectionIndex }: { section: Section; sectionI
 }
 
 // ============ PITFALLS SECTION ============
+// ============ FIELD PROTOCOLS ACCORDION SECTION ============
+function FieldProtocolsSection() {
+  const [activeProtocol, setActiveProtocol] = useState<string | null>(null);
+  const [openGuidelines, setOpenGuidelines] = useState<Record<string, boolean>>({});
+
+  const toggleProtocol = (id: string) => {
+    setActiveProtocol(prev => prev === id ? null : id);
+    setOpenGuidelines({});
+  };
+
+  const toggleGuideline = (key: string) => {
+    setOpenGuidelines(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const checklistColor = (type?: string) => {
+    if (type === 'red') return 'bg-red-50 border-red-200 text-red-800';
+    if (type === 'yellow') return 'bg-yellow-50 border-yellow-200 text-yellow-800';
+    if (type === 'green') return 'bg-green-50 border-green-200 text-green-800';
+    if (type === 'black') return 'bg-gray-100 border-gray-300 text-gray-700';
+    return 'bg-gray-50 border-gray-200 text-gray-700';
+  };
+
+  return (
+    <div id="fieldProtocols" className="mb-10 scroll-mt-24">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="p-5 md:p-6" style={{ background: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)' }}>
+          <div className="flex items-center gap-3">
+            <span className="text-3xl md:text-4xl">📋</span>
+            <div>
+              <span className="text-xs font-bold text-blue-200 uppercase tracking-wider">RISKS8</span>
+              <h2 className="text-xl md:text-2xl font-bold text-white font-[Tajawal]">البروتوكولات الميدانية</h2>
+              <p className="text-blue-200 text-xs md:text-sm mt-0.5">6 بروتوكولات تفاعلية — اضغط على أي بروتوكول لعرض التفاصيل</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 md:p-5 space-y-3">
+          {fieldProtocols.map((protocol) => (
+            <div key={protocol.id} className="rounded-xl border overflow-hidden" style={{ borderColor: protocol.color + '40' }}>
+              {/* Protocol Header */}
+              <button
+                onClick={() => toggleProtocol(protocol.id)}
+                className="w-full flex items-center justify-between p-4 text-right transition-colors hover:opacity-90"
+                style={{ backgroundColor: activeProtocol === protocol.id ? protocol.color : protocol.color + '12' }}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{protocol.icon}</span>
+                  <span
+                    className="text-sm md:text-base font-bold font-[Tajawal]"
+                    style={{ color: activeProtocol === protocol.id ? 'white' : protocol.color }}
+                  >
+                    {protocol.title}
+                  </span>
+                </div>
+                <span
+                  className="text-lg transition-transform duration-300"
+                  style={{
+                    color: activeProtocol === protocol.id ? 'white' : protocol.color,
+                    transform: activeProtocol === protocol.id ? 'rotate(180deg)' : 'rotate(0deg)'
+                  }}
+                >
+                  ▼
+                </span>
+              </button>
+
+              {/* Protocol Content */}
+              {activeProtocol === protocol.id && (
+                <div className="p-4 space-y-4 bg-white">
+                  {/* Checklist */}
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2 font-[Tajawal]">✅ قائمة المراجعة</h4>
+                    <div className="space-y-1.5">
+                      {protocol.checklist.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className={`flex items-start gap-2 p-2.5 rounded-lg border text-xs md:text-sm font-[Tajawal] ${checklistColor(item.type)}`}
+                        >
+                          <span className="mt-0.5 shrink-0">{'type' in item && item.type ? (item.type === 'red' ? '🔴' : item.type === 'yellow' ? '🟡' : item.type === 'green' ? '🟢' : '⚫') : '☐'}</span>
+                          <span>{item.text}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Guidelines Accordion */}
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2 font-[Tajawal]">📖 الإرشادات التفصيلية</h4>
+                    <div className="space-y-2">
+                      {protocol.guidelines.map((guide, gIdx) => {
+                        const key = `${protocol.id}-${gIdx}`;
+                        return (
+                          <div key={gIdx} className="rounded-lg border border-gray-200 overflow-hidden">
+                            <button
+                              onClick={() => toggleGuideline(key)}
+                              className="w-full flex items-center justify-between p-3 text-right bg-gray-50 hover:bg-gray-100 transition-colors"
+                            >
+                              <span className="text-xs md:text-sm font-bold text-gray-700 font-[Tajawal]">{guide.title}</span>
+                              <span className="text-gray-400 text-sm transition-transform duration-200" style={{ transform: openGuidelines[key] ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</span>
+                            </button>
+                            {openGuidelines[key] && (
+                              <div className="p-3 bg-white">
+                                <ul className="space-y-1.5">
+                                  {guide.items.map((item, iIdx) => (
+                                    <li key={iIdx} className="flex items-start gap-2 text-xs md:text-sm text-gray-700 font-[Tajawal]">
+                                      <span className="text-gray-400 mt-0.5 shrink-0">•</span>
+                                      <span>{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function PitfallsSection() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
@@ -1263,6 +1391,7 @@ function SidebarMenu({ isOpen, onClose, onNavigate }: { isOpen: boolean; onClose
     { id: "module5", label: "سلامة مشغلي المركبات", icon: "🚑" },
     { id: "module6", label: "مكافحة العدوى", icon: "🦠" },
     { id: "module7", label: "الصحة الشخصية وسلامة المرضى", icon: "❤️" },
+        { id: "fieldProtocols", label: "البروتوكولات الميدانية", icon: "📋" },
     { id: "pitfalls", label: "الأخطاء الشائعة (Pitfalls)", icon: "🔎" },
     { id: "rules", label: "القواعد المهمة", icon: "📋" },
     { id: "summary", label: "الملخص", icon: "📑" },
@@ -1481,6 +1610,7 @@ export default function Home() {
               { id: "module5", icon: "🚑", label: "المركبات" },
               { id: "module6", icon: "🦠", label: "العدوى" },
               { id: "module7", icon: "❤️", label: "السلامة" },
+              { id: "fieldProtocols", icon: "📋", label: "البروتوكولات" },
               { id: "pitfalls", icon: "🔎", label: "Pitfalls" },
               { id: "rules", icon: "📋", label: "القواعد" },
               { id: "summary", icon: "📑", label: "الملخص" },
@@ -1506,6 +1636,9 @@ export default function Home() {
         {sections.map((section, i) => (
           <SectionRenderer key={section.id} section={section} sectionIndex={i} />
         ))}
+
+        {/* Field Protocols */}
+        <FieldProtocolsSection />
 
         {/* Pitfalls */}
         <PitfallsSection />

@@ -477,3 +477,24 @@
 [2026-03-19T02:10:25.630Z] 10:10:25 PM [vite] (client) hmr update /src/index.css
 [2026-03-19T02:49:15.573Z] 10:49:15 PM [vite] (client) page reload 404.html
 [2026-03-19T02:49:15.585Z] 10:49:15 PM [vite] (client) page reload index.html
+[2026-03-19T03:18:55.681Z] 11:18:55 PM [vite] (client) page reload 404.html
+[2026-03-19T03:18:55.683Z] 11:18:55 PM [vite] (client) page reload client/index.html
+[2026-03-19T03:18:55.705Z] 11:18:55 PM [vite] (client) page reload index.html
+[2026-03-19T03:19:02.665Z] 11:19:02 PM [vite] changed tsconfig file detected: /home/ubuntu/srca-medical-lecture/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2026-03-19T03:19:09.890Z] 11:19:09 PM [vite] (client) page reload 404.html
+[2026-03-19T03:19:09.891Z] 11:19:09 PM [vite] (client) page reload index.html
+[2026-03-19T03:23:29.428Z] Dev server process group stopped
+[2026-03-19T03:23:29.432Z] ELIFECYCLE  Command failed.
+[2026-03-19T03:23:29.449Z] Dev server exited with code -15
+[2026-03-19T03:23:32.448Z] Starting dev server with command: pnpm run dev
+[2026-03-19T03:23:33.237Z] 
+[2026-03-19T03:23:33.238Z] > srca-medical-lecture@1.0.0 dev /home/ubuntu/srca-medical-lecture
+[2026-03-19T03:23:33.238Z] > vite --host
+[2026-03-19T03:23:33.238Z] 
+[2026-03-19T03:23:33.640Z] 
+[2026-03-19T03:23:33.641Z] VITE v7.1.9  ready in 360 ms
+[2026-03-19T03:23:33.641Z] 
+[2026-03-19T03:23:33.641Z] ➜  Local:   http://localhost:3000/
+[2026-03-19T03:23:33.642Z] ➜  Network: http://169.254.0.21:3000/
+[2026-03-19T03:23:34.893Z] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[2026-03-19T03:24:45.009Z] 11:24:45 PM [vite] (client) hmr update /src/index.css
