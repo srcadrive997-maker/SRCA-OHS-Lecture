@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 
 // ============ GOOGLE SHEETS CONFIG ============
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycby-w0KuuL-qWEPsMDrDoYAmhJRV_HE4NvLsVDRGR0IH28hN6VB6F9g93qOTkhSrqWOTQA/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyj1v-YBtCOxdr3hw66ADb2v4I8t4tcuH_jaWOcWuiqmHJS_AP6bmgzN4AEtL8mLbZTWg/exec';
 
 // Component to show attendance count from Google Sheets
 function SheetsAttendanceCount() {
@@ -1069,7 +1069,7 @@ function MCQAssessment() {
         percentage: percentage.toString() + "%"
       };
 
-      await fetch('https://script.google.com/macros/s/AKfycby-w0KuuL-qWEPsMDrDoYAmhJRV_HE4NvLsVDRGR0IH28hN6VB6F9g93qOTkhSrqWOTQA/exec', {
+      await fetch(SHEETS_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
