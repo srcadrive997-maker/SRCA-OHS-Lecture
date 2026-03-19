@@ -199,18 +199,6 @@ export const sections: Section[] = [
         title: "القسم الثاني: أنواع التلوث والمواد الخطرة (CBRNE)",
         text: "يتعرض الطاقم الإسعافي لأنواع مختلفة من التلوث أثناء العمل الميداني. يشمل ذلك التلوث البيولوجي والكيميائي والإشعاعي والنووي والمتفجرات. يجب على المسعف معرفة كيفية التعامل مع كل نوع وفقاً للبروتوكولات المعتمدة."
       },
-      {
-        type: "cbrne" as any,
-        title: "تعريف CBRNE — التهديدات الخمسة",
-        text: "التصنيف الدولي للمواد الخطرة والتهديدات غير التقليدية",
-        cards: [
-          { letter: "C", label: "Chemical", labelAr: "كيميائي", description: "غازات الأعصاب (Sarin, VX, Tabun, Soman) — عوامل البثور (غاز الخردل) — السيانيد — الكلور — الأمونيا — الفوسجين", icon: "🧪", color: "#e65100", glowColor: "rgba(230,81,0,0.3)" },
-          { letter: "B", label: "Biological", labelAr: "بيولوجي", description: "الجمرة الخبيثة (Anthrax) — الجدري (Smallpox) — الطاعون (Plague) — التولاريميا — السموم البيولوجية (Ricin, Botulinum)", icon: "🦠", color: "#2e7d32", glowColor: "rgba(46,125,50,0.3)" },
-          { letter: "R", label: "Radiological", labelAr: "إشعاعي", description: "القنبلة القذرة (Dirty Bomb) — تشتيت المواد المشعة — حوادث النقل الإشعاعي — تلوث المصادر المشعة المفقودة", icon: "☢️", color: "#f9a825", glowColor: "rgba(249,168,37,0.3)" },
-          { letter: "N", label: "Nuclear", labelAr: "نووي", description: "تفجير سلاح نووي — حادث مفاعل نووي (هيروشيما، تشيرنوبل، فوكوشيما) — الغبار النووي (Fallout) — النبضة الكهرومغناطيسية (EMP)", icon: "⚛️", color: "#c62828", glowColor: "rgba(198,40,40,0.3)" },
-          { letter: "E", label: "Explosive", labelAr: "متفجرات", description: "العبوات الناسفة التقليدية — العبوات المرتجلة (IED) — السيارات المفخخة (VBIED) — الأحزمة الناسفة — الذخائر غير المنفجرة (UXO)", icon: "💥", color: "#4a148c", glowColor: "rgba(74,20,140,0.3)" }
-        ]
-      },
 
       // ── التلوث البيولوجي ──
       {
