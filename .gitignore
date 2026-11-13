@@ -1,0 +1,7 @@
+
+# security-gate: لا تُرفع ملفات الأسرار
+.claude/settings.local.json
+.claude/**/*.jsonl
+.env
+.env.*
+!.env.example
